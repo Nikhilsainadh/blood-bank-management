@@ -3,345 +3,357 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BloodSave - Blood Bank Management System</title>
+    <title>BloodDonate - Blood Bank Management System</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #00bfae;
+            --secondary: #4e54c8;
+            --accent: #e44236;
+            --light-bg: #f8f9fa;
+            --dark-bg: #2d2d32;
+            --text: #232326;
+            --border: #dddfe6;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #eef3fa;
-            color: #232b3a;
+            background: var(--light-bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 35px auto;
-            background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 8px 36px rgba(33,43,58,.09);
+            width: 98%;
+            max-width: 1150px;
+            margin: 40px auto 0 auto;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 6px 24px 0 rgba(0,0,0,0.06);
             overflow: hidden;
-            border: 1px solid #e2e8f0;
         }
 
         .header {
-            background: #2186eb;
-            color: white;
-            padding: 2.5rem 1rem 2rem 1rem;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 90%);
+            color: #fff;
             text-align: center;
-            border-bottom: 4px solid #1e5aa7;
+            padding: 40px 20px 25px 20px;
         }
         .header h1 {
-            font-size: 3em;
             font-weight: 700;
-            margin-bottom: 0.5em;
+            font-size: 3em;
+            margin-bottom: 8px;
             letter-spacing: -1px;
         }
-
         .header p {
             font-size: 1.2em;
-            color: #e3ecfa;
         }
 
+        /* Nav tabs */
         .nav-tabs {
             display: flex;
-            background: #f6f7fb;
-            border-bottom: 2px solid #e2e7eb;
-        }
-        .nav-tab {
-            flex: 1;
-            text-align: center;
-            padding: 18px;
-            background: none;
-            border: none;
-            font-size: 1.04em;
-            font-weight: 600;
-            color: #1e5aa7;
-            cursor: pointer;
-            border-radius: 0;
-            outline: none;
-            transition: background 0.2s, color 0.2s;
+            border-bottom: 2px solid var(--border);
+            background: #fff;
+            overflow: auto;
         }
 
-        .nav-tab.active, .nav-tab:hover {
-            background: #f0f6ff;
-            color: #2186eb;
-            border-bottom: 2px solid #2186eb;
+        .nav-tab {
+            flex: 1;
+            padding: 18px 0;
+            font-size: 1.08em;
+            font-weight: 600;
+            color: #555;
+            text-align: center;
+            background: none;
+            border: none;
+            border-right: 1px solid var(--border);
+            outline: none;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s;
+        }
+        .nav-tab:last-child {
+            border-right: none;
+        }
+        .nav-tab.active {
+            color: var(--primary);
+            background: linear-gradient(90deg, var(--light-bg) 60%, #e3f9f7 100%);
+        }
+        .nav-tab:hover:not(.active) {
+            background: #f5f5fa;
+            color: var(--secondary);
         }
 
         .content {
-            padding: 35px 32px;
-            background: #fff;
+            padding: 38px 34px 38px 34px;
+            background: #fafbfe;
+            min-height: 480px;
         }
 
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn .2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0;}
+            to { opacity: 1;}
+        }
+
+        /* Dashboard Cards */
         .stats-grid {
             display: flex;
-            gap: 25px;
-            margin-bottom: 32px;
+            gap: 22px;
             flex-wrap: wrap;
+            margin-bottom: 34px;
         }
-
         .stat-card {
-            background: #f5f8fa;
-            color: #2186eb;
-            padding: 2em 1.4em;
-            border-radius: 13px;
-            box-shadow: 0 2px 14px rgba(33,134,235,0.07);
-            flex: 1;
-            min-width: 210px;
+            flex: 1 1 210px;
+            min-width: 180px;
+            background: linear-gradient(125deg, var(--primary) 25%, var(--secondary) 100%);
+            color: #fff;
+            padding: 28px 0 16px 0;
+            border-radius: 10px;
             text-align: center;
-            margin-bottom: 8px;
-            transition: transform .18s;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 8px 0 rgba(0,0,0,0.035);
         }
-
-        .stat-card:hover {
-            transform: scale(1.04);
-        }
-
         .stat-number {
-            font-size: 2.6em;
-            font-weight: 700;
-            color: #1e5aa7;
-            margin-bottom: .3em;
+            font-size: 2.8em;
+            font-weight: 800;
+            letter-spacing: -2px;
         }
-
         .stat-label {
-            font-size: 1.07em;
-            color: #677892;
+            font-size: 1em;
+            font-weight: 500;
+            opacity: 0.91;
+            text-shadow: none;
         }
 
+        /* Tables */
         .table-container {
             overflow-x: auto;
-            border-radius: 11px;
+            border-radius: 10px;
+            background: white;
+            border: 1px solid var(--border);
             margin-top: 18px;
-            box-shadow: 0 3px 14px rgba(180, 202, 231, 0.09);
-            background: #f9fafc;
         }
-
         table {
-            width: 100%;
             border-collapse: collapse;
-            margin-bottom: 24px;
-            font-size: 1.13em;
+            width: 100%;
+            min-width: 620px;
+            background: none;
         }
-
         th, td {
-            padding: 18px;
+            border-bottom: 1px solid var(--border);
+            padding: 14px 12px;
             text-align: left;
-            border-bottom: 1px solid #ecf2f8;
         }
-
         th {
-            background: #eaf1fa;
-            color: #195898;
+            background: #f2f7ff;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.93em;
+            font-size: 0.97em;
+            color: var(--secondary);
         }
-
-        tr {
-            transition: background 0.25s;
-        }
-
         tr:hover {
-            background: #e4f1fe;
+            background: #f4ffff;
         }
 
         .blood-type {
             display: inline-block;
-            padding: 7px 18px;
-            border-radius: 13px;
+            font-weight: 700;
             color: #fff;
-            font-weight: 600;
-            font-size: 0.97em;
-            background: #2186eb;
+            padding: 4px 12px;
+            border-radius: 18px;
+            font-size: 0.98em;
+            margin-right: 2px;
         }
+        .blood-A { background: #00bfae;}
+        .blood-B { background: #4e54c8;}
+        .blood-AB { background: #e67e22;}
+        .blood-O { background: #e44236;}
 
         .status {
-            padding: 7px 15px;
-            border-radius: 11px;
-            font-weight: 700;
-            font-size: 0.98em;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
+            padding: 4px 18px;
+            border-radius: 16px;
+            font-weight: bold;
+            font-size: 0.92em;
+            letter-spacing: 1px;
         }
+        .status.available { background: #caf7e3; color: #009980;}
+        .status.low { background: #ffe599; color: #c47f13;}
+        .status.critical { background: #ffd6da; color: #c00c00;}
+        .status.pending { background: #dbeafe; color: #002766;}
+        .status.fulfilled { background: #ddfae0; color: #20724d;}
 
-        .status.available {
-            background: #e2faee;
-            color: #188247;
-        }
-
-        .status.low {
-            background: #fff7e2;
-            color: #cc9800;
-        }
-
-        .status.critical {
-            background: #ffeaea;
-            color: #cc313d;
-        }
-
-        .btn {
-            background: #195898;
-            color: white;
-            border: none;
-            padding: 13px 28px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: background 0.18s, transform .18s;
-        }
-        .btn:hover {
-            background: #2186eb;
-            transform: translateY(-2px);
-        }
-        .btn-danger {
-            background: #d64545;
-        }
-        .btn-danger:hover {
-            background: #d11a2d;
-        }
-        .btn-secondary {
-            background: #888fab;
-            color: #fff;
-        }
-        .btn-secondary:hover {
-            background: #4a5473;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 13px 17px;
-            border: 2px solid #dee7f4;
-            border-radius: 10px;
-            font-size: 1.04em;
-            background: #fafdff;
-            font-family: 'Inter', sans-serif;
-            margin-bottom: 6px;
-            transition: border-color .2s, background .2s;
-        }
-        input:focus, select:focus, textarea:focus {
-            border-color: #2186eb;
-            background: #fff;
-            outline: none;
-        }
-
-        label {
-            font-weight: 600;
-            color: #5775a0;
-            margin-bottom: 8px;
-            display: block;
-            text-transform: uppercase;
-            font-size: 1em;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        /* Modal Styles */
+        /* Forms and Modal */
         .modal {
             display: none;
             position: fixed;
-            z-index: 3;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(39, 63, 113, 0.17);
+            z-index: 99;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(38,46,63,0.24);
+            align-items: center;
+            justify-content: center;
         }
         .modal-content {
-            background: #f7fafd;
-            padding: 38px 40px;
+            background: #fff;
             border-radius: 10px;
-            margin: 5% auto;
-            width: 95%; max-width: 420px;
+            width: 98%;
+            max-width: 410px;
+            padding: 32px 26px 20px 26px;
+            margin: 70px auto;
+            box-shadow: 0 6px 32px 0 rgba(44,54,64,0.12);
             position: relative;
-            box-shadow: 0 8px 28px rgba(15,90,178,0.17);
-            border: 1.5px solid #e3ebf5;
         }
         .close {
             position: absolute;
-            right: 18px; top: 18px;
-            color: #868ba1;
-            font-size: 2rem;
+            top: 13px; right: 18px;
+            font-size: 1.8em;
+            color: #aaaaaa;
             cursor: pointer;
-            font-weight: 700;
-        }
-        .close:hover {
-            color: #d64545;
-            background: #fde6e6;
+            font-weight: bold;
             border-radius: 50%;
         }
-
-        /* Alert styles */
-        .alert {
-            padding: 15px 24px;
-            border-radius: 8px;
-            font-size: 1.05em;
-            font-weight: 500;
-            margin-bottom: 18px;
-            border-left: 6px solid #aaa;
-            background: #e8f0fa;
-            color: #2172b8;
+        .close:hover {
+            color: var(--accent);
+            background: #ffe3e3;
         }
-        .alert-success {
-            background: #e6f4ea;
-            color: #188247;
-            border-left: 6px solid #34b87c;
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1.06em;
+            letter-spacing: 0.4px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-size: 1em;
+            background: #f2f6fb;
+            color: var(--text);
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #e3f9f7;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 12px 27px;
+            border-radius: 7px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.09em;
+            font-weight: 700;
+            margin: 2px 0;
+            transition: background 0.16s, transform 0.16s;
+        }
+        .btn:hover {
+            background: var(--secondary);
+            color: #fff;
+            transform: translateY(-2px) scale(1.03);
+        }
+        .btn-danger {
+            background: var(--accent);
+        }
+        .btn-danger:hover {
+            background: #b4372a;
+        }
+        .btn-secondary {
+            background: #4b517f;
+        }
+        .btn-secondary:hover {
+            background: #32325a;
+        }
+
+        .search-box input {
+            width: 300px;
+            max-width: 100%;
+        }
+        .alert {
+            background: #ddfae0;
+            color: #20724d;
+            border: 1.5px solid #88ebc6;
+            border-radius: 7px;
+            padding: 18px 16px;
+            margin-bottom: 22px;
+            font-weight: 600;
+            font-size: 1.11em;
         }
         .alert-error {
-            background: #fee6e6;
-            color: #b83338;
-            border-left: 6px solid #d64545;
+            background: #ffd6da;
+            color: #c00c00;
+            border: 1.5px solid #fa99a1;
         }
-
-        /* Footer styles */
+        @media (max-width: 900px) {
+            .stats-grid { flex-direction: column; }
+            .content { padding: 14px 6px;}
+        }
+        /* Footer */
         .footer {
-            background: #195898;
-            color: #dbeaff;
-            padding: 44px 30px 12px 30px;
-            margin-top: 55px;
+            background: var(--dark-bg);
+            color: #cad6e3;
+            padding: 45px 22px 30px;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+        .footer-section {
+            flex: 1;
+            min-width: 260px;
         }
         .footer-section h3 {
-            color: #fff;
+            color: var(--primary);
+            font-size: 1.6em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
             font-weight: 700;
-            font-size: 1.3em;
-            margin-bottom: 13px;
         }
-        .footer-section p, .footer-section li {
-            line-height: 1.7;
-            font-size: 1em;
-        }
+        .footer-section ul { list-style: none; padding-left: 0;}
+        .footer-section li { margin: 8px 0;}
         .footer-bottom {
+            border-top: 1px solid #343846;
+            margin-top: 28px;
             text-align: center;
-            margin-top: 25px;
-            padding-top: 10px;
-            font-size: 1em;
-            color: #c0daff;
-            border-top: 1px solid #2760b0;
-        }
-
-        /* Responsive */
-        @media (max-width: 800px) {
-            .stats-grid { flex-direction: column; }
-            .content { padding: 15px; }
-            .header h1 { font-size: 1.8em; }
-            .modal-content { width: 99%; max-width: 98vw; padding: 12px 6px; }
-        }
-        @media (max-width: 500px) {
-            .nav-tabs { flex-direction: column; }
+            font-size: 1.1em;
+            padding-top: 16px;
+            opacity: 0.82;
         }
     </style>
 </head>
 <body>
+    <!-- The rest of your HTML (all content inside <body>),
+         including .container, .header, nav-tabs, .content, .modals, .footer,
+         and <script> goes here and remains unchanged. Just replace the <style> section! -->
+<body>
     <div class="container">
         <div class="header">
-            <h1>🩸 BloodSave</h1>
+            <h1>🩸 BloodDonate</h1>
             <p>Advanced Blood Bank Management • Saving Lives Through Innovation</p>
         </div>
 
@@ -610,8 +622,8 @@
     <div class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>About BloodSave</h3>
-                <p>BloodSave is a cutting-edge blood bank management system designed to streamline blood donation processes and save lives through efficient inventory management. Our platform connects donors, hospitals, and blood banks in a seamless digital ecosystem.</p>
+                <h3>About BloodDonate</h3>
+                <p>BloodDonate is a cutting-edge blood bank management system designed to streamline blood donation processes and save lives through efficient inventory management. Our platform connects donors, hospitals, and blood banks in a seamless digital ecosystem.</p>
                 <p>Founded in 2024, we are committed to revolutionizing healthcare through innovative technology solutions that make blood donation and distribution more accessible and efficient.</p>
             </div>
             <div class="footer-section">
@@ -619,20 +631,20 @@
                 <ul>
                     <li><strong>Address:</strong> 123 Healthcare Avenue, Medical District, New York, NY 10001</li>
                     <li><strong>Phone:</strong> +1 (555) 123-BLOOD</li>
-                    <li><strong>Email:</strong> contact@BloodSave.com</li>
+                    <li><strong>Email:</strong> contact@BloodDonate.com</li>
                     <li><strong>Emergency Hotline:</strong> +1 (555) 911-HELP</li>
                     <li><strong>Office Hours:</strong> 24/7 Emergency Support</li>
-                    <li><strong>Support:</strong> support@BloodSave.com</li>
+                    <li><strong>Support:</strong> support@BloodDonate.com</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 BloodSave. All rights reserved. | Saving Lives Through Technology</p>
+            <p>&copy; 2024 BloodDonate. All rights reserved. | Saving Lives Through Technology</p>
         </div>
     </div>
 
     <script>
-       const API_BASE = 'https://blood-bank-main.onrender.com/api';
+       const API_BASE = 'https://blood-bank-xpby.onrender.com/api';
 
         function showTab(tabName) {
             const tabs = document.querySelectorAll('.tab-content');
@@ -928,4 +940,5 @@
         });
     </script>
 </body>
+        </body>
 </html>
