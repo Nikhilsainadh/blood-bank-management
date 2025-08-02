@@ -201,7 +201,7 @@ app.get(/^\/(?!api).*/, (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Frontend available at:https://blood-bank-management-l1nm.onrender.com/`);
-    console.log(`API available at:https://blood-bank-management-l1nm.onrender.com/`);
+    console.log(`Frontend available at: https://blood-bank-management-l1nm.onrender.com/`);
+    console.log(`API available at: https://blood-bank-management-l1nm.onrender.com/`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
